@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕊️ OSI Avontuur</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #98FB98 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .game-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: 80vh;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #4A90E2, #357ABD);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #7ED321;
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.8s ease;
+            width: 0%;
+        }
+
+        .layer-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .layer-nav-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .layer-nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .layer-nav-btn.active {
+            background: #7ED321;
+            border-color: #7ED321;
+            color: white;
+        }
+
+        .layer-nav-btn.completed {
+            background: #4CAF50;
+            border-color: #4CAF50;
+            color: white;
+        }
+
+        .layer-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .start-screen h2 {
+            color: #4A90E2;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .start-screen p {
+            color: #666;
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .start-btn, .next-btn {
+            background: linear-gradient(135deg, #4A90E2, #357ABD);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .start-btn:hover, .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .layer-icon {
+            font-size: 6em;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .layer-title {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .explanation {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #4A90E2;
+            line-height: 1.6;
+        }
+
+        .questions-section {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .questions-title {
+            color: #4A90E2;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4A90E2;
+        }
+
+        .question h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .answer-btn {
+            display: block;
+            width: 100%;
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 1em;
+        }
+
+        .answer-btn:hover {
+            background: #f0f0f0;
+            border-color: #4A90E2;
+        }
+
+        .answer-btn.correct {
+            background: #d4edda;
+            border-color: #4CAF50;
+            color: #155724;
+        }
+
+        .answer-btn.incorrect {
+            background: #f8d7da;
+            border-color: #f44336;
+            color: #721c24;
+        }
+
+        .reward-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .reward-popup.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .reward-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .celebration {
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+            padding: 50px;
+            border-radius: 20px;
+        }
+
+        .certificate {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 3px solid #4A90E2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 10px;
+            margin: 10px;
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4A90E2;
+        }
+
+        .layer-1 { color: #E74C3C; }
+        .layer-2 { color: #3498DB; }
+        .layer-3 { color: #F39C12; }
+        .layer-4 { color: #9B59B6; }
+        .layer-5 { color: #1ABC9C; }
+        .layer-6 { color: #E67E22; }
+        .layer-7 { color: #2ECC71; }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .layer-title {
+                font-size: 2em;
+            }
+
+            .layer-navigation {
+                gap: 5px;
+            }
+
+            .layer-nav-btn {
+                padding: 6px 10px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>🕊️ OSI Avontuur</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="layer-navigation" id="layerNavigation">
+                <!-- Dynamic navigation buttons -->
+            </div>
+        </div>
+
+        <div class="content" id="gameContent">
+            <!-- Dynamic content -->
+        </div>
+    </div>
+
+    <!-- Reward Popup -->
+    <div class="reward-popup" id="rewardPopup">
+        <div class="reward-icon" id="rewardIcon">🎉</div>
+        <h2 id="rewardTitle" style="color: #4A90E2; margin-bottom: 15px;">Gefeliciteerd!</h2>
+        <p id="rewardText" style="font-size: 1.3em; margin-bottom: 20px;"></p>
+        <p id="rewardSubText" style="color: #666; margin-bottom: 25px;"></p>
+        <div id="rewardButtons"></div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+        // Game state
+        let currentLayer = 0;
+        let completedLayers = [];
+        let questionsAnswered = 0;
+        let totalQuestions = 0;
+        let gameStats = {
+            startTime: new Date(),
+            correctAnswers: 0,
+            totalAttempts: 0,
+            timeSpent: 0
+        };
+
+        // Layer data - 7 OSI layers
+        const layers = [
+            {
+                id: 1,
+                title: "Fysieke Laag - De Kabels en Signalen",
+                icon: "🔌",
+                color: "#E74C3C",
+                badge: "Fysiek Expert",
+                explanation: `<strong>🔌 Welkom bij de fysieke laag!</strong><br>
+                Onze digitale postduif begint zijn reis hier - bij de echte kabels, WiFi signalen en USB-poorten! 
+                Dit is waar bits (0'en en 1'en) worden omgezet in elektrische signalen, licht of radiogolven.
+                <br><br>
+                <strong>🌟 Voorbeelden:</strong> Ethernet kabels, WiFi antennes, USB-kabels, glasvezelkabels.
+                <br><strong>📡 Ezelsbruggetje:</strong> Fysiek = wat je kunt aanraken!`,
+                questions: [
+                    {
+                        question: "🔌 Welke van deze hoort bij de fysieke laag?",
+                        answers: [
+                            { text: "📧 Een email versturen", correct: false },
+                            { text: "🔌 Een USB-kabel", correct: true },
+                            { text: "🌐 Een website bezoeken", correct: false }
+                        ]
+                    },
+                    {
+                        question: "📡 Wat doet de fysieke laag?",
+                        answers: [
+                            { text: "💬 Berichten vertalen", correct: false },
+                            { text: "⚡ Bits omzetten in elektrische signalen", correct: true },
+                            { text: "🗺️ Routes berekenen", correct: false }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "Datalink Laag - Lokale Berichten",
+                icon: "📦",
+                color: "#3498DB",
+                badge: "Datalink Detective",
+                explanation: `<strong>📦 De datalink laag is als een lokale postbode!</strong><br>
+                Deze laag zorgt ervoor dat berichten goed aankomen bij de directe buur-computers. 
+                Het voegt adressen toe zodat computers in hetzelfde netwerk elkaar kunnen vinden.
+                <br><br>
+                <strong>🏠 Voorbeelden:</strong> MAC-adressen, Ethernet frames, WiFi verbindingen.
+                <br><strong>🏃 Ezelsbruggetje:</strong> Datalink = pakketje bezorgen bij je directe buren!`,
+                questions: [
+                    {
+                        question: "📦 Voor wie zijn datalink pakketjes bedoeld?",
+                        answers: [
+                            { text: "🌍 Alle computers wereldwijd", correct: false },
+                            { text: "🏠 Alleen directe buurcomputers", correct: true },
+                            { text: "📱 Alleen smartphones", correct: false }
+                        ]
+                    },
+                    {
+                        question: "🏠 Wat is een MAC-adres?",
+                        answers: [
+                            { text: "🍎 Een Apple computer", correct: false },
+                            { text: "🆔 Een uniek nummer voor elke netwerkkaart", correct: true },
+                            { text: "🔐 Een wachtwoord", correct: false }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "Netwerk Laag - De Grote Reis",
+                icon: "🗺️",
+                color: "#F39C12",
+                badge: "Netwerk Navigator",
+                explanation: `<strong>🗺️ De netwerk laag is als een GPS voor data!</strong><br>
+                Hier wordt besloten welke route een bericht moet nemen om van jouw computer naar een computer ver weg te gaan. 
+                Het IP-adres wordt hier gebruikt - dat is zoals het huisadres van elke computer.
+                <br><br>
+                <strong>🌐 Voorbeelden:</strong> IP-adressen, routers, het internet.
+                <br><strong>🗺️ Ezelsbruggetje:</strong> Netwerk = de route plannen voor een lange reis!`,
+                questions: [
+                    {
+                        question: "🗺️ Wat is een IP-adres?",
+                        answers: [
+                            { text: "🔐 Een wachtwoord", correct: false },
+                            { text: "🏠 Het huisadres van een computer", correct: true },
+                            { text: "🦠 Een virus", correct: false }
+                        ]
+                    },
+                    {
+                        question: "🌐 Wat doet een router?",
+                        answers: [
+                            { text: "📺 Video's afspelen", correct: false },
+                            { text: "🗺️ Berichten de juiste kant opsturen", correct: true },
+                            { text: "🔌 Kabels repareren", correct: false }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "Transport Laag - Betrouwbare Levering",
+                icon: "🚛",
+                color: "#9B59B6",
+                badge: "Transport Tracker",
+                explanation: `<strong>🚛 De transport laag is als een betrouwbare koeriersdienst!</strong><br>
+                Deze laag zorgt ervoor dat grote berichten worden opgedeeld in kleinere stukjes en dat alle stukjes goed aankomen. 
+                Het is alsof je een grote puzzel opdeelt in kleine stukjes om te versturen.
+                <br><br>
+                <strong>📦 Voorbeelden:</strong> TCP (betrouwbaar), UDP (snel), poortnummers.
+                <br><strong>🚛 Ezelsbruggetje:</strong> Transport = grote spullen opsplitsen voor makkelijker vervoer!`,
+                questions: [
+                    {
+                        question: "🚛 Waarom worden grote bestanden opgedeeld?",
+                        answers: [
+                            { text: "🔒 Voor de veiligheid", correct: false },
+                            { text: "📦 Dat is makkelijker te versturen", correct: true },
+                            { text: "💾 Om ruimte te besparen", correct: false }
+                        ]
+                    },
+                    {
+                        question: "🔢 Wat is een poortnummer?",
+                        answers: [
+                            { text: "🚪 Het nummer van je voordeur", correct: false },
+                            { text: "📬 Welke dienst het bericht moet ontvangen", correct: true },
+                            { text: "📞 Je telefoonnummer", correct: false }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: "Sessie Laag - Gesprekken Organiseren",
+                icon: "🤝",
+                color: "#1ABC9C",
+                badge: "Sessie Specialist",
+                explanation: `<strong>🤝 De sessie laag is als een gespreksbegeleider!</strong><br>
+                Deze laag zorgt ervoor dat gesprekken tussen computers netjes beginnen, doorgaan en eindigen. 
+                Het houdt bij wie er aan het praten is en regelt wie er wanneer mag praten.
+                <br><br>
+                <strong>💬 Voorbeelden:</strong> Inloggen, gesprekken starten/stoppen, beurten verdelen.
+                <br><strong>🤝 Ezelsbruggetje:</strong> Sessie = een gesprek netjes beginnen en beëindigen!`,
+                questions: [
+                    {
+                        question: "🤝 Wat doet de sessie laag?",
+                        answers: [
+                            { text: "💬 Gesprekken tussen computers organiseren", correct: true },
+                            { text: "🔌 Kabels aansluiten", correct: false },
+                            { text: "🗺️ Routes berekenen", correct: false }
+                        ]
+                    },
+                    {
+                        question: "🔐 Wanneer is de sessie laag belangrijk?",
+                        answers: [
+                            { text: "🎮 Bij het spelen van online games", correct: false },
+                            { text: "🔑 Bij het inloggen op websites", correct: true },
+                            { text: "📺 Bij het kijken van video's", correct: false }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 6,
+                title: "Presentatie Laag - Vertaling",
+                icon: "🌍",
+                color: "#E67E22",
+                badge: "Presentatie Pro",
+                explanation: `<strong>🌍 De presentatie laag is als Google Translate voor computers!</strong><br>
+                Computers spreken soms verschillende 'talen' (bestandsformaten). Deze laag zorgt ervoor dat ze elkaar begrijpen door berichten te vertalen, versleutelen of comprimeren.
+                <br><br>
+                <strong>🔄 Voorbeelden:</strong> Versleuteling, compressie (ZIP), verschillende bestandsformaten.
+                <br><strong>🌍 Ezelsbruggetje:</strong> Presentatie = vertalen zodat iedereen het begrijpt!`,
+                questions: [
+                    {
+                        question: "🌍 Wat betekent 'presentatie' in deze laag?",
+                        answers: [
+                            { text: "🎨 Dat computers elkaar begrijpen (zoals vertalen)", correct: true },
+                            { text: "⚡ Dat berichten snel aankomen", correct: false },
+                            { text: "🗺️ Dat de route wordt gevonden", correct: false }
+                        ]
+                    },
+                    {
+                        question: "🗜️ Wat is compressie?",
+                        answers: [
+                            { text: "📦 Bestanden kleiner maken, zoals kleren in een koffer proppen", correct: true },
+                            { text: "🔐 Bestanden versleutelen", correct: false },
+                            { text: "📤 Bestanden versturen", correct: false }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 7,
+                title: "Applicatie Laag - De Echte Boodschap",
+                icon: "💌",
+                color: "#2ECC71",
+                badge: "App Avonturier",
+                explanation: `<strong>💌 De applicatie laag is waar de magie gebeurt!</strong><br>
+                Dit is waar de échte actie plaatsvindt: WhatsApp, games, video's kijken. Dat wat JIJ wilt doen! 
+                Alle andere lagen werken samen om deze laag mogelijk te maken.
+                <br><br>
+                <strong>🎮 Voorbeelden:</strong> WhatsApp berichten, YouTube video's, online games, email, websites.
+                <br><strong>💌 Ezelsbruggetje:</strong> Applicatie = wat jij echt wilt doen met de computer!`,
+                questions: [
+                    {
+                        question: "💌 Wat gebeurt er in de applicatie laag?",
+                        answers: [
+                            { text: "📦 Berichten worden ingepakt", correct: false },
+                            { text: "🎮💬 De échte programma's zoals spellen en WhatsApp", correct: true },
+                            { text: "🗺️ Routes worden berekend", correct: false }
+                        ]
+                    },
+                    {
+                        question: "🎯 Waarom werken alle andere lagen samen voor deze laag?",
+                        answers: [
+                            { text: "🎮 Zodat jij kunt doen wat je wilt met de computer", correct: true },
+                            { text: "🤖 Omdat computers dat leuk vinden", correct: false },
+                            { text: "💡 Om energie te besparen", correct: false }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // Final test questions (mixed from all layers)
+        const finalTestQuestions = [
+            {
+                question: "🔌 Welke laag zorgt voor de fysieke verbinding tussen computers?",
+                answers: [
+                    { text: "Fysieke laag", correct: true },
+                    { text: "Applicatie laag", correct: false },
+                    { text: "Netwerk laag", correct: false }
+                ]
+            },
+            {
+                question: "🗺️ Wat is een IP-adres?",
+                answers: [
+                    { text: "Een wachtwoord", correct: false },
+                    { text: "Het huisadres van een computer", correct: true },
+                    { text: "Een virus", correct: false }
+                ]
+            },
+            {
+                question: "📦 Voor wie zijn datalink pakketjes bedoeld?",
+                answers: [
+                    { text: "Alle computers wereldwijd", correct: false },
+                    { text: "Alleen directe buurcomputers", correct: true },
+                    { text: "Alleen smartphones", correct: false }
+                ]
+            },
+            {
+                question: "🚛 Waarom worden grote bestanden opgedeeld?",
+                answers: [
+                    { text: "Voor de veiligheid", correct: false },
+                    { text: "Dat is makkelijker te versturen", correct: true },
+                    { text: "Om ruimte te besparen", correct: false }
+                ]
+            },
+            {
+                question: "🎮 In welke laag vind je WhatsApp en games?",
+                answers: [
+                    { text: "Fysieke laag", correct: false },
+                    { text: "Transport laag", correct: false },
+                    { text: "Applicatie laag", correct: true }
+                ]
+            }
+        ];
+
+        // Initialize game
+        function initGame() {
+            showStartScreen();
+            updateLayerNavigation();
+            
+            // Load saved progress
+            const saved = localStorage.getItem('osi-adventure-progress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                completedLayers = progress.completed || [];
+                currentLayer = progress.current || 0;
+                gameStats = { ...gameStats, ...progress.stats };
+            }
+        }
+
+        function showStartScreen() {
+            const content = document.getElementById('gameContent');
+            content.innerHTML = `
+                <div class="start-screen">
+                    <div style="font-size: 6em; margin-bottom: 30px;">🕊️✨</div>
+                    <h2>Welkom bij OSI Avontuur!</h2>
+                    <p>Help onze digitale postduif een bericht te bezorgen door het computernetwerk! 
+                    Ontdek hoe computers met elkaar praten in 7 magische lagen.</p>
+                    <p>🎯 <strong>Doel:</strong> Voltooi alle 7 lagen en word een echte netwerk ontdekkingsreiziger!</p>
+                    <button class="start-btn" onclick="startGame()">🚀 Start het Avontuur!</button>
+                    ${completedLayers.length > 0 ? `<br><button class="next-btn" onclick="continueGame()">📖 Verder waar ik was</button>` : ''}
+                </div>
+            `;
+        }
+
+        function startGame() {
+            currentLayer = 1;
+            questionsAnswered = 0;
+            gameStats.startTime = new Date();
+            showLayer(1);
+        }
+
+        function continueGame() {
+            if (completedLayers.length === 7) {
+                showFinalTest();
+            } else {
+                showLayer(completedLayers.length + 1);
+            }
+        }
+
+        function showLayer(layerNum) {
+            currentLayer = layerNum;
+            const layer = layers[layerNum - 1];
+            questionsAnswered = 0;
+            totalQuestions = layer.questions.length;
+            
+            updateProgress();
+            updateLayerNavigation();
+            
+            const content = document.getElementById('gameContent');
+            content.innerHTML = `
+                <div class="layer-icon" style="color: ${layer.color}">${layer.icon}</div>
+                <h2 class="layer-title layer-${layer.id}" style="color: ${layer.color}">Laag ${layer.id}: ${layer.title}</h2>
+                
+                <div class="explanation" style="border-left-color: ${layer.color}">
+                    ${layer.explanation}
+                </div>
+
+                <div class="questions-section">
+                    <h3 class="questions-title">🧠 Test je kennis!</h3>
+                    ${layer.questions.map((q, index) => `
+                        <div class="question" id="question-${index}">
+                            <h3>Vraag ${index + 1}: ${q.question}</h3>
+                            ${q.answers.map((answer, answerIndex) => `
+                                <button class="answer-btn" onclick="checkAnswer(this, ${answer.correct}, ${index})">${answer.text}</button>
+                            `).join('')}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function checkAnswer(button, isCorrect, questionIndex) {
+            const question = document.getElementById(`question-${questionIndex}`);
+            const buttons = question.querySelectorAll('.answer-btn');
+            
+            gameStats.totalAttempts++;
+            
+            // Disable all buttons
+            buttons.forEach(btn => btn.disabled = true);
+            
+            if (isCorrect) {
+                button.classList.add('correct');
+                gameStats.correctAnswers++;
+                questionsAnswered++;
+                
+                // Check if layer is complete
+                if (questionsAnswered === totalQuestions) {
+                    completedLayers.push(currentLayer);
+                    saveProgress();
+                    
+                    setTimeout(() => {
+                        if (currentLayer === 7) {
+                            showFinalTest();
+                        } else {
+                            showReward();
+                        }
+                    }, 1000);
+                }
+            } else {
+                button.classList.add('incorrect');
+                
+                // Show correct answer after 2 seconds
+                setTimeout(() => {
+                    buttons.forEach(btn => {
+                        btn.disabled = false;
+                        btn.classList.remove('incorrect');
+                    });
+                }, 2000);
+            }
+        }
+
+        function showReward() {
+            const layer = layers[currentLayer - 1];
+            
+            document.getElementById('rewardIcon').textContent = layer.icon;
+            document.getElementById('rewardTitle').textContent = 'Laag Voltooid!';
+            document.getElementById('rewardText').innerHTML = `Je hebt de "${layer.badge}" badge verdiend!`;
+            
+            if (currentLayer === 7) {
+                document.getElementById('rewardSubText').innerHTML = 'Je hebt alle 7 lagen voltooid! Tijd voor de eindtest...';
+                document.getElementById('rewardButtons').innerHTML = `
+                    <button class="next-btn" onclick="closeReward(); showFinalTest();">🏆 Naar de Eindtest!</button>
+                `;
+            } else {
+                document.getElementById('rewardSubText').innerHTML = `Geweldig! Je begrijpt nu laag ${currentLayer}. Klaar voor de volgende uitdaging?`;
+                document.getElementById('rewardButtons').innerHTML = `
+                    <button class="next-btn" onclick="closeReward(); showLayer(${currentLayer + 1});">🚀 Naar Laag ${currentLayer + 1}!</button>
+                    <br><button class="next-btn" onclick="closeReward(); showStartScreen();">🏠 Terug naar Start</button>
+                `;
+            }
+            
+            document.getElementById('rewardPopup').classList.add('show');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function showFinalTest() {
+            currentLayer = 8; // Special state for final test
+            updateProgress();
+            updateLayerNavigation();
+            
+            questionsAnswered = 0;
+            totalQuestions = finalTestQuestions.length;
+            
+            const content = document.getElementById('gameContent');
+            content.innerHTML = `
+                <div class="layer-icon">🏆</div>
+                <h2 class="layer-title" style="color: #E74C3C">🎓 Eindtest - Ben jij een OSI Expert?</h2>
+                
+                <div class="explanation" style="border-left-color: #E74C3C">
+                    <strong>🎯 Laatste uitdaging!</strong><br>
+                    Je hebt alle 7 lagen geleerd. Nu gaan we kijken of je een echte OSI expert bent geworden! 
+                    Deze vragen komen uit alle lagen door elkaar.
+                    <br><br>
+                    <strong>💪 Succes!</strong> Je kunt het!
+                </div>
+
+                <div class="questions-section">
+                    <h3 class="questions-title">🧠 Eindtest!</h3>
+                    ${finalTestQuestions.map((q, index) => `
+                        <div class="question" id="question-${index}">
+                            <h3>Vraag ${index + 1}: ${q.question}</h3>
+                            ${q.answers.map((answer, answerIndex) => `
+                                <button class="answer-btn" onclick="checkFinalAnswer(this, ${answer.correct}, ${index})">${answer.text}</button>
+                            `).join('')}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function checkFinalAnswer(button, isCorrect, questionIndex) {
+            const question = document.getElementById(`question-${questionIndex}`);
+            const buttons = question.querySelectorAll('.answer-btn');
+            
+            gameStats.totalAttempts++;
+            
+            // Disable all buttons
+            buttons.forEach(btn => btn.disabled = true);
+            
+            if (isCorrect) {
+                button.classList.add('correct');
+                gameStats.correctAnswers++;
+                questionsAnswered++;
+                
+                // Check if final test is complete
+                if (questionsAnswered === totalQuestions) {
+                    setTimeout(() => {
+                        showCelebration();
+                    }, 1000);
+                }
+            } else {
+                button.classList.add('incorrect');
+                
+                // Show correct answer after 2 seconds
+                setTimeout(() => {
+                    buttons.forEach(btn => {
+                        btn.disabled = false;
+                        btn.classList.remove('incorrect');
+                    });
+                }, 2000);
+            }
+        }
+
+        function showCelebration() {
+            gameStats.timeSpent = Math.round((new Date() - gameStats.startTime) / 60000);
+            const accuracy = Math.round((gameStats.correctAnswers / gameStats.totalAttempts) * 100);
+            
+            // Notify parent window of completion
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'moduleCompleted',
+                    module: 'osi-adventure',
+                    moduleName: 'OSI Avontuur'
+                }, '*');
+            }
+            
+            const content = document.getElementById('gameContent');
+            content.innerHTML = `
+                <div class="celebration">
+                    <div style="font-size: 6em; margin-bottom: 30px;">🎉🏆🎉</div>
+                    <h2 style="color: #E74C3C; font-size: 3em; margin-bottom: 30px;">GEFELICITEERD!</h2>
+                    
+                    <div class="certificate">
+                        <h3 style="font-size: 2.5em; margin-bottom: 20px; color: #4A90E2;">🏆 OSI ONTDEKKINGSREIZIGER 🏆</h3>
+                        <p style="font-size: 1.5em; margin-bottom: 15px;">Dit certificaat wordt uitgereikt aan:</p>
+                        <h2 style="font-size: 2em; color: #4A90E2; margin-bottom: 20px;">OSI Avonturier</h2>
+                        <p style="font-size: 1.2em;">Voor het succesvol voltooien van alle 7 OSI-lagen<br>
+                        en het behalen van de expert status!</p>
+                        <p style="margin-top: 20px; font-size: 1em;">🕊️ Je bent nu een echte netwerk expert! 🕊️</p>
+                    </div>
+
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-number">${completedLayers.length}/7</div>
+                            <div>Lagen Voltooid</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">${accuracy}%</div>
+                            <div>Nauwkeurigheid</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">${gameStats.timeSpent}</div>
+                            <div>Minuten Gespeeld</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">7</div>
+                            <div>Badges Verdiend</div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #4A90E2; margin: 30px 0 20px 0;">🎖️ Je Verdiende Badges:</h3>
+                    <div style="font-size: 1.5em; margin-bottom: 30px;">
+                        🔌 Fysiek Expert • 📦 Datalink Detective • 🗺️ Netwerk Navigator • 🚛 Transport Tracker • 🤝 Sessie Specialist • 🌍 Presentatie Pro • 💌 App Avonturier
+                    </div>
+
+                    <button class="start-btn" onclick="showStartScreen()">🏠 Terug naar Start</button>
+                </div>
+            `;
+        }
+
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const progress = (completedLayers.length / 7) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        function updateLayerNavigation() {
+            const navigation = document.getElementById('layerNavigation');
+            navigation.innerHTML = layers.map((layer, index) => {
+                const layerNum = index + 1;
+                const isCompleted = completedLayers.includes(layerNum);
+                const isActive = layerNum === currentLayer;
+                const isAccessible = layerNum <= completedLayers.length + 1;
+                
+                return `<button class="layer-nav-btn ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" 
+                    onclick="${isAccessible ? `showLayer(${layerNum})` : 'void(0)'}" 
+                    ${!isAccessible ? 'disabled' : ''}>
+                    ${layer.icon} ${layerNum}
+                </button>`;
+            }).join('') + 
+            (completedLayers.length === 7 ? 
+                `<button class="layer-nav-btn ${currentLayer === 8 ? 'active' : 'completed'}" onclick="showFinalTest()">🏆 Test</button>` : 
+                '');
+        }
+
+        function saveProgress() {
+            localStorage.setItem('osi-adventure-progress', JSON.stringify({
+                completed: completedLayers,
+                current: currentLayer,
+                stats: gameStats
+            }));
+        }
+
+        function closeReward() {
+            document.getElementById('rewardPopup').classList.remove('show');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Initialize game when page loads
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>

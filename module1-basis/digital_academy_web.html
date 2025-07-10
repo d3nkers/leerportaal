@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Digital Academy - Digital Rangers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .academy-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #667eea;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .ranger-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .ranger-rank {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .academy-points {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .badges-earned {
+            background: #FF9800;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .module-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .module-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .lessons-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .lesson-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .lesson-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .lesson-card.completed {
+            background: #e8f5e8;
+            border-left-color: #4CAF50;
+        }
+
+        .lesson-card.started {
+            background: #fff3cd;
+            border-left-color: #FF9800;
+        }
+
+        .lesson-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .lesson-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+
+        .lesson-title {
+            font-size: 1.2em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .lesson-status {
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        .lesson-status.completed {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .lesson-status.started {
+            background: #FF9800;
+            color: white;
+        }
+
+        .lesson-status.available {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .lesson-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .lesson-goals {
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .badges-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .badge-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .badge-card.earned {
+            background: linear-gradient(135deg, #ffe0b3, #ffcc80);
+            border-color: #FF9800;
+            transform: scale(1.05);
+        }
+
+        .badge-card.available {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-color: #2196F3;
+        }
+
+        .badge-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .badge-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .badge-description {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .lesson-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .lesson-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lesson-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .lesson-content {
+            margin-bottom: 30px;
+        }
+
+        .lesson-content h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .lesson-story {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .quiz-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .quiz-question h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .quiz-answers {
+            display: grid;
+            gap: 10px;
+        }
+
+        .quiz-answer {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .quiz-answer:hover {
+            background: #e3f2fd;
+            border-color: #667eea;
+        }
+
+        .quiz-answer.correct {
+            background: #e8f5e8;
+            border-color: #4CAF50;
+            color: #2e7d32;
+        }
+
+        .quiz-answer.incorrect {
+            background: #ffebee;
+            border-color: #f44336;
+            color: #c62828;
+        }
+
+        .quiz-result {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            border: 2px solid #4CAF50;
+        }
+
+        .start-lesson-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .start-lesson-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .progress-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .badges-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .ranger-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .lesson-modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="academy-container">
+        <div class="header">
+            <h1>🎓 Digital Academy</h1>
+            <p>Word een Digital Ranger en ontdek de digitale wereld!</p>
+            <div class="ranger-info">
+                <div class="ranger-rank" id="rangerRank">🆕 Digital Rookie</div>
+                <div class="academy-points" id="academyPoints">📊 0 Punten</div>
+                <div class="badges-earned" id="badgesEarned">🏆 0 Badges</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h3 style="color: #667eea; margin-bottom: 15px;">📈 Jouw Voortgang</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p id="progressText">0 van 5 lessen voltooid</p>
+        </div>
+
+        <div class="main-content">
+            <div class="module-section">
+                <h2 class="module-title">🖥️ Computer Basics Realm</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 25px;">
+                    Leer alles over computers en besturingssystemen!
+                </p>
+                <div class="lessons-grid" id="lessonsGrid">
+                    <!-- Lessons will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="badges-section">
+                <h2 class="module-title">🏆 Badge Verzameling</h2>
+                <div class="badges-grid" id="badgesGrid">
+                    <!-- Badges will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lesson Modal -->
+    <div class="lesson-modal" id="lessonModal">
+        <div class="lesson-modal-content">
+            <button class="close-modal" onclick="closeLessonModal()">&times;</button>
+            <div id="lessonContent">
+                <!-- Lesson content will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let rangerData = {
+            name: "Digital Ranger",
+            rank: 0,
+            points: 0,
+            earnedBadges: [],
+            completedLessons: [],
+            startedLessons: []
+        };
+
+        // Ranks system
+        const ranks = [
+            { name: "🆕 Digital Rookie", min: 0, max: 49 },
+            { name: "💻 Computer Cadet", min: 50, max: 99 },
+            { name: "🌐 Internet Explorer", min: 100, max: 149 },
+            { name: "🛡️ Cyber Guardian", min: 150, max: 199 },
+            { name: "🔍 Data Detective", min: 200, max: 249 },
+            { name: "🎨 Digital Creator", min: 250, max: 299 },
+            { name: "🤝 Tech Helper", min: 300, max: 349 },
+            { name: "⭐ Digital Mentor", min: 350, max: 399 },
+            { name: "🏆 Digital Legend", min: 400, max: 999 }
+        ];
+
+        // Lessons data
+        const lessons = [
+            {
+                id: 'os_safari',
+                title: 'OS Safari - Ontdek de Besturingssystemen',
+                icon: '🌍',
+                description: 'Leer over Ubuntu, Windows en Chrome OS',
+                goals: ['Ubuntu herkennen', 'Windows begrijpen', 'Chrome OS ontdekken'],
+                story: 'De Digital Rangers ontdekken drie mysterieuze digitale werelden...',
+                badge: 'os_master',
+                points: 30,
+                questions: [
+                    {
+                        question: 'Welk besturingssysteem gebruikt een pinguïn als mascotte?',
+                        answers: [
+                            { text: '🐧 Ubuntu (Linux)', correct: true },
+                            { text: '🪟 Windows', correct: false },
+                            { text: '🌐 Chrome OS', correct: false },
+                            { text: '🍎 macOS', correct: false }
+                        ]
+                    },
+                    {
+                        question: 'Wat is het belangrijkste kenmerk van Chrome OS?',
+                        answers: [
+                            { text: '🎮 Vooral voor gaming', correct: false },
+                            { text: '🌐 Werkt vooral met web apps', correct: true },
+                            { text: '📱 Alleen voor tablets', correct: false },
+                            { text: '💰 Heel duur', correct: false }
+                        ]
+                    },
+                    {
+                        question: 'Welk besturingssysteem wordt het meest gebruikt op computers?',
+                        answers: [
+                            { text: '🐧 Ubuntu', correct: false },
+                            { text: '🪟 Windows', correct: true },
+                            { text: '🌐 Chrome OS', correct: false },
+                            { text: '🍎 macOS', correct: false }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'file_explorer',
+                title: 'File Explorer Quest - Bestanden Beheersen',
+                icon: '📁',
+                description: 'Leer hoe je bestanden organiseert en vindt',
+                goals: ['Mappen maken', 'Bestanden sorteren', 'Zoeken naar bestanden'],
+                story: 'Belangrijke bestanden zijn verstopt in de digitale chaos!',
+                badge: 'file_organizer',
+                points: 25,
+                questions: [
+                    {
+                        question: 'Waar bewaar je best je schoolwerk?',
+                        answers: [
+                            { text: '📁 In een speciale map voor school', correct: true },
+                            { text: '🗑️ Op het bureaublad', correct: false },
+                            { text: '📥 In de Downloads map', correct: false },
+                            { text: '🔀 Overal verspreid', correct: false }
+                        ]
+                    },
+                    {
+                        question: 'Hoe kun je snel een bestand vinden?',
+                        answers: [
+                            { text: '👀 Door alle mappen te bekijken', correct: false },
+                            { text: '🔍 Door de zoekfunctie te gebruiken', correct: true },
+                            { text: '🎲 Door te raden', correct: false },
+                            { text: '❓ Door hulp te vragen', correct: false }
+                        ]
+                    },
+                    {
+                        question: 'Wat is een goede mappenstructuur?',
+                        answers: [
+                            { text: '📁 Alles in één map', correct: false },
+                            { text: '📂 Logische groepen maken', correct: true },
+                            { text: '🔢 Nummers gebruiken', correct: false },
+                            { text: '🎨 Alleen op kleur sorteren', correct: false }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'keyboard_ninja',
+                title: 'Keyboard Ninja - Sneltoetsen Meester',
+                icon: '⌨️',
+                description: 'Word een sneltoetsen expert',
+                goals: ['Ctrl+C/V leren', 'Sneller typen', 'Shortcuts gebruiken'],
+                story: 'Een ninja ranger moet snel en efficiënt werken!',
+                badge: 'keyboard_ninja',
+                points: 35,
+                questions: [
+                    {
+                        question: 'Welke sneltoets gebruik je om te kopiëren?',
+                        answers: [
+                            { text: '⌨️ Ctrl + C', correct: true },
+                            { text: '⌨️ Ctrl + V', correct: false },
+                            { text: '⌨️ Ctrl + Z', correct: false },
+                            { text: '⌨️ Ctrl + S', correct: false }
+                        ]
+                    },
+                    {
+                        question: 'Wat doet Ctrl + Z?',
+                        answers: [
+                            { text: '💾 Opslaan', correct: false },
+                            { text: '↩️ Ongedaan maken', correct: true },
+                            { text: '📄 Nieuw document', correct: false },
+                            { text: '🔍 Zoeken', correct: false }
+                        ]
+                    },
+                    {
+                        question: 'Welke toets gebruik je om hoofdletters te typen?',
+                        answers: [
+                            { text: '🔄 Caps Lock', correct: false },
+                            { text: '⬆️ Shift', correct: true },
+                            { text: '⌨️ Ctrl', correct: false },
+                            { text: '🎯 Alt', correct: false }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'troubleshoot_detective',
+                title: 'Troubleshoot Detective - Problemen Oplossen',
+                icon: '🔧',
+                description: 'Leer computerproblemen oplossen',
+                goals: ['Problemen herkennen', 'Oplossingen zoeken', 'Hulp vragen'],
+                story: 'Computers hebben soms problemen - jij bent de oplossing!',
+                badge: 'troubleshoot_hero',
+                points: 40,
+                questions: [
+                    {
+                        question: 'Wat doe je als je computer langzaam is?',
+                        answers: [
+                            { text: '😤 Boos worden', correct: false },
+                            { text: '🔄 Opnieuw opstarten', correct: true },
+                            { text: '🔨 Erop slaan', correct: false },
+                            { text: '⏰ Gewoon wachten', correct: false }
+                        ]
+                    },
+                    {
+                        question: 'Wat doe je als een programma niet reageert?',
+                        answers: [
+                            { text: '⏳ Eeuwig wachten', correct: false },
+                            { text: '🔄 Het programma sluiten en opnieuw starten', correct: true },
+                            { text: '💻 Nieuwe computer kopen', correct: false },
+                            { text: '🚫 Nooit meer gebruiken', correct: false }
+                        ]
+                    },
+                    {
+                        question: 'Wanneer vraag je hulp?',
+                        answers: [
+                            { text: '🙅 Nooit', correct: false },
+                            { text: '🤔 Als je het echt niet weet', correct: true },
+                            { text: '📞 Altijd meteen', correct: false },
+                            { text: '🎲 Alleen op vrijdag', correct: false }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'hardware_heroes',
+                title: 'Hardware Heroes - Computeronderdelen',
+                icon: '⚙️',
+                description: 'Ontdek wat er in een computer zit',
+                goals: ['CPU herkennen', 'RAM begrijpen', 'Opslag weten'],
+                story: 'Kijk binnen in de computer om te zien hoe de magie werkt!',
+                badge: 'hardware_expert',
+                points: 30,
+                questions: [
+                    {
+                        question: 'Wat is het "brein" van de computer?',
+                        answers: [
+                            { text: '🧠 CPU (processor)', correct: true },
+                            { text: '💾 Harde schijf', correct: false },
+                            { text: '🖥️ Monitor', correct: false },
+                            { text: '⌨️ Toetsenbord', correct: false }
+                        ]
+                    },
+                    {
+                        question: 'Waar worden je bestanden bewaard?',
+                        answers: [
+                            { text: '🧠 CPU', correct: false },
+                            { text: '💾 Harde schijf of SSD', correct: true },
+                            { text: '🖥️ Monitor', correct: false },
+                            { text: '⚡ RAM', correct: false }
+                        ]
+                    },
+                    {
+                        question: 'Wat is RAM?',
+                        answers: [
+                            { text: '🐑 Een dier', correct: false },
+                            { text: '⚡ Tijdelijk geheugen voor snelheid', correct: true },
+                            { text: '🖥️ Een type monitor', correct: false },
+                            { text: '💾 Permanente opslag', correct: false }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // Badges data
+        const badges = [
+            {
+                id: 'os_master',
+                name: 'OS Master',
+                icon: '🖥️',
+                description: 'Kent Ubuntu, Windows EN Chrome OS als een pro!',
+                requiredPoints: 30,
+                lesson: 'os_safari'
+            },
+            {
+                id: 'file_organizer',
+                name: 'File Organizer',
+                icon: '📁',
+                description: 'Kan bestanden vinden en organiseren als een echte pro!',
+                requiredPoints: 25,
+                lesson: 'file_explorer'
+            },
+            {
+                id: 'keyboard_ninja',
+                name: 'Keyboard Ninja',
+                icon: '⌨️',
+                description: 'Beheerst alle shortcuts en typt supersnel!',
+                requiredPoints: 35,
+                lesson: 'keyboard_ninja'
+            },
+            {
+                id: 'troubleshoot_hero',
+                name: 'Troubleshoot Hero',
+                icon: '🔧',
+                description: 'Lost computerproblemen op als een superheld!',
+                requiredPoints: 40,
+                lesson: 'troubleshoot_detective'
+            },
+            {
+                id: 'hardware_expert',
+                name: 'Hardware Expert',
+                icon: '⚙️',
+                description: 'Weet alles over wat er in een computer zit!',
+                requiredPoints: 30,
+                lesson: 'hardware_heroes'
+            }
+        ];
+
+        // Initialize game
+        function initGame() {
+            loadProgress();
+            renderLessons();
+            renderBadges();
+            updateUI();
+        }
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('digital-academy-progress');
+            if (saved) {
+                rangerData = { ...rangerData, ...JSON.parse(saved) };
+            }
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            localStorage.setItem('digital-academy-progress', JSON.stringify(rangerData));
+        }
+
+        // Render lessons
+        function renderLessons() {
+            const lessonsGrid = document.getElementById('lessonsGrid');
+            lessonsGrid.innerHTML = '';
+
+            lessons.forEach(lesson => {
+                const lessonCard = document.createElement('div');
+                lessonCard.className = 'lesson-card';
+                
+                let statusClass = 'available';
+                let statusText = '🎯 Beschikbaar';
+                
+                if (rangerData.completedLessons.includes(lesson.id)) {
+                    statusClass = 'completed';
+                    statusText = '✅ Voltooid';
+                    lessonCard.classList.add('completed');
+                } else if (rangerData.startedLessons.includes(lesson.id)) {
+                    statusClass = 'started';
+                    statusText = '🔄 Bezig';
+                    lessonCard.classList.add('started');
+                }
+
+                lessonCard.innerHTML = `
+                    <div class="lesson-header">
+                        <div style="display: flex; align-items: center;">
+                            <div class="lesson-icon">${lesson.icon}</div>
+                            <div class="lesson-title">${lesson.title}</div>
+                        </div>
+                        <div class="lesson-status ${statusClass}">${statusText}</div>
+                    </div>
+                    <div class="lesson-description">${lesson.description}</div>
+                    <div class="lesson-goals">
+                        🎯 Leerdoelen: ${lesson.goals.join(', ')}
+                    </div>
+                `;
+
+                lessonCard.addEventListener('click', () => openLessonModal(lesson));
+                lessonsGrid.appendChild(lessonCard);
+            });
+        }
+
+        // Render badges
+        function renderBadges() {
+            const badgesGrid = document.getElementById('badgesGrid');
+            badgesGrid.innerHTML = '';
+
+            badges.forEach(badge => {
+                const badgeCard = document.createElement('div');
+                badgeCard.className = 'badge-card';
+                
+                const isEarned = rangerData.earnedBadges.includes(badge.id);
+                const canEarn = rangerData.points >= badge.requiredPoints && rangerData.completedLessons.includes(badge.lesson);
+                
+                if (isEarned) {
+                    badgeCard.classList.add('earned');
+                } else if (canEarn) {
+                    badgeCard.classList.add('available');
+                }
+
+                badgeCard.innerHTML = `
+                    <div class="badge-icon">${badge.icon}</div>
+                    <div class="badge-name">${badge.name}</div>
+                    <div class="badge-description">${badge.description}</div>
+                    ${isEarned ? '<div style="color: #4CAF50; font-weight: bold; margin-top: 10px;">✅ Verdiend!</div>' : ''}
+                    ${canEarn && !isEarned ? '<div style="color: #FF9800; font-weight: bold; margin-top: 10px;">🎯 Beschikbaar!</div>' : ''}
+                `;
+
+                badgesGrid.appendChild(badgeCard);
+            });
+        }
+
+        // Update UI
+        function updateUI() {
+            // Update rank
+            const currentRank = ranks.find(rank => rangerData.points >= rank.min && rangerData.points <= rank.max);
+            document.getElementById('rangerRank').textContent = currentRank.name;
+
+            // Update points
+            document.getElementById('academyPoints').textContent = `📊 ${rangerData.points} Punten`;
+
+            // Update badges
+            document.getElementById('badgesEarned').textContent = `🏆 ${rangerData.earnedBadges.length} Badges`;
+
+            // Update progress
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const progress = (rangerData.completedLessons.length / lessons.length) * 100;
+            
+            progressFill.style.width = progress + '%';
+            progressText.textContent = `${rangerData.completedLessons.length} van ${lessons.length} lessen voltooid`;
+        }
+
+        // Open lesson modal
+        function openLessonModal(lesson) {
+            const modal = document.getElementById('lessonModal');
+            const content = document.getElementById('lessonContent');
+            
+            content.innerHTML = `
+                <div class="lesson-content">
+                    <h2>${lesson.icon} ${lesson.title}</h2>
+                    <div class="lesson-story">
+                        <h3>📖 Verhaal</h3>
+                        <p>${lesson.story}</p>
+                    </div>
+                    <div>
+                        <h3>🎯 Leerdoelen</h3>
+                        <ul>
+                            ${lesson.goals.map(goal => `<li>${goal}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <button class="start-lesson-btn" onclick="startLesson('${lesson.id}')">
+                        🚀 Start Missie
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.add('show');
+        }
+
+        // Close lesson modal
+        function closeLessonModal() {
+            document.getElementById('lessonModal').classList.remove('show');
+        }
+
+        // Start lesson
+        function startLesson(lessonId) {
+            if (!rangerData.startedLessons.includes(lessonId)) {
+                rangerData.startedLessons.push(lessonId);
+                saveProgress();
+                renderLessons();
+                updateUI();
+            }
+            
+            const lesson = lessons.find(l => l.id === lessonId);
+            showQuiz(lesson);
+        }
+
+        // Show quiz
+        function showQuiz(lesson) {
+            const content = document.getElementById('lessonContent');
+            
+            content.innerHTML = `
+                <div class="lesson-content">
+                    <h2>${lesson.icon} ${lesson.title} - Quiz</h2>
+                    <div class="quiz-section">
+                        <h3>🧠 Test je kennis!</h3>
+                        <div id="quizQuestions"></div>
+                        <button class="start-lesson-btn" onclick="submitQuiz('${lesson.id}')" id="submitBtn" style="display: none;">
+                            ✅ Voltooi Quiz
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            const questionsContainer = document.getElementById('quizQuestions');
+            
+            lesson.questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'quiz-question';
+                questionDiv.innerHTML = `
+                    <h3>Vraag ${index + 1}: ${question.question}</h3>
+                    <div class="quiz-answers">
+                        ${question.answers.map((answer, answerIndex) => `
+                            <button class="quiz-answer" onclick="selectAnswer(${index}, ${answerIndex}, ${answer.correct})" data-question="${index}">
+                                ${answer.text}
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+                questionsContainer.appendChild(questionDiv);
+            });
+        }
+
+        // Select answer
+        function selectAnswer(questionIndex, answerIndex, isCorrect) {
+            const buttons = document.querySelectorAll(`[data-question="${questionIndex}"]`);
+            buttons.forEach(btn => btn.disabled = true);
+            
+            const selectedButton = buttons[answerIndex];
+            
+            if (isCorrect) {
+                selectedButton.classList.add('correct');
+            } else {
+                selectedButton.classList.add('incorrect');
+                // Show correct answer
+                buttons.forEach((btn, idx) => {
+                    if (btn.textContent.includes('🐧') || btn.textContent.includes('🌐') || btn.textContent.includes('🪟') || btn.textContent.includes('📁') || btn.textContent.includes('🔍') || btn.textContent.includes('⌨️') || btn.textContent.includes('↩️') || btn.textContent.includes('⬆️') || btn.textContent.includes('🔄') || btn.textContent.includes('🤔') || btn.textContent.includes('🧠') || btn.textContent.includes('💾') || btn.textContent.includes('⚡')) {
+                        if (lessons.find(l => l.questions[questionIndex].answers[idx].correct)) {
+                            btn.classList.add('correct');
+                        }
+                    }
+                });
+            }
+            
+            // Check if all questions are answered
+            const allAnswered = document.querySelectorAll('.quiz-answer.correct, .quiz-answer.incorrect').length >= lessons.find(l => l.questions).questions.length;
+            if (allAnswered) {
+                document.getElementById('submitBtn').style.display = 'block';
+            }
+        }
+
+        // Submit quiz
+        function submitQuiz(lessonId) {
+            const lesson = lessons.find(l => l.id === lessonId);
+            
+            // Award points
+            rangerData.points += lesson.points;
+            
+            // Mark lesson as completed
+            if (!rangerData.completedLessons.includes(lessonId)) {
+                rangerData.completedLessons.push(lessonId);
+            }
+            
+            // Check for badge
+            const badge = badges.find(b => b.lesson === lessonId);
+            if (badge && !rangerData.earnedBadges.includes(badge.id)) {
+                rangerData.earnedBadges.push(badge.id);
+                showBadgeEarned(badge);
+            }
+            
+            // Save progress
+            saveProgress();
+            
+            // Show completion
+            const content = document.getElementById('lessonContent');
+            content.innerHTML = `
+                <div class="lesson-content">
+                    <div class="quiz-result">
+                        <h2>🎉 Missie Voltooid!</h2>
+                        <p>Je hebt ${lesson.points} punten verdiend!</p>
+                        <p>Gefeliciteerd, Digital Ranger!</p>
+                        <button class="start-lesson-btn" onclick="closeLessonModal()">
+                            🏠 Terug naar Academy
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Update UI
+            renderLessons();
+            renderBadges();
+            updateUI();
+            
+            // Check if all lessons completed
+            if (rangerData.completedLessons.length === lessons.length) {
+                showFinalCelebration();
+            }
+        }
+
+        // Show badge earned
+        function showBadgeEarned(badge) {
+            setTimeout(() => {
+                alert(`🏆 Nieuwe Badge Verdiend!\n\n${badge.icon} ${badge.name}\n\n${badge.description}`);
+            }, 500);
+        }
+
+        // Show final celebration
+        function showFinalCelebration() {
+            // Notify parent window of completion
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'moduleCompleted',
+                    module: 'digital-academy',
+                    moduleName: 'Digital Academy'
+                }, '*');
+            }
+            
+            setTimeout(() => {
+                const content = document.getElementById('lessonContent');
+                content.innerHTML = `
+                    <div class="lesson-content">
+                        <div class="quiz-result">
+                            <h2>🎉🏆 ALLE MISSIES VOLTOOID! 🏆🎉</h2>
+                            <p style="font-size: 1.2em; margin: 20px 0;">
+                                Gefeliciteerd! Je bent nu een echte Digital Ranger!
+                            </p>
+                            <p>Je hebt alle ${lessons.length} lessen voltooid en ${rangerData.earnedBadges.length} badges verdiend!</p>
+                            <p>Totaal punten: ${rangerData.points}</p>
+                            <p>Huidige rank: ${document.getElementById('rangerRank').textContent}</p>
+                            <button class="start-lesson-btn" onclick="closeLessonModal()">
+                                🏠 Terug naar Academy
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('lessonModal').classList.add('show');
+            }, 1000);
+        }
+
+        // Initialize game when page loads
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Digitaal Leerportaal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #4A90E2;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .progress-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .progress-title {
+            font-size: 1.5em;
+            color: #4A90E2;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .module-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+
+        .module-card.completed {
+            border-color: #4CAF50;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(255, 255, 255, 0.95));
+        }
+
+        .module-card.started {
+            border-color: #FF9800;
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 255, 255, 0.95));
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .module-icon {
+            font-size: 4em;
+            margin-right: 20px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .module-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .module-status {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .module-description {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .module-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            width: 100%;
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .play-button:active {
+            transform: translateY(0);
+        }
+
+        .play-button.completed {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+        }
+
+        .play-button.started {
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            text-align: center;
+            margin-top: 50px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .footer h3 {
+            color: #4A90E2;
+            margin-bottom: 10px;
+        }
+
+        .footer p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .reset-button {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        .reset-button:hover {
+            background: #d32f2f;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .module-card {
+                padding: 20px;
+            }
+
+            .module-icon {
+                font-size: 3em;
+                margin-right: 15px;
+            }
+
+            .module-title {
+                font-size: 1.5em;
+            }
+
+            .container {
+                padding: 20px 10px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .module-card {
+            animation: fadeIn 0.5s ease;
+        }
+
+        .module-card:nth-child(1) { animation-delay: 0.1s; }
+        .module-card:nth-child(2) { animation-delay: 0.2s; }
+        .module-card:nth-child(3) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎓 Digitaal Leerportaal</h1>
+        <p>Ontdek de digitale wereld met interactieve lessen en spellen!</p>
+    </div>
+
+    <div class="container">
+        <div class="progress-section">
+            <div class="progress-title">🏆 Jouw Voortgang</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0 van 3 modules voltooid</div>
+        </div>
+
+        <div class="modules-grid">
+            <div class="module-card" data-module="digital-world">
+                <div class="module-header">
+                    <div class="module-icon">🌐</div>
+                    <div>
+                        <div class="module-title">Digital World Explorer</div>
+                        <div class="module-status" id="status-digital-world">🕐 Nog niet gestart</div>
+                    </div>
+                </div>
+                <div class="module-description">
+                    Ontdek de digitale wereld veilig! Leer over YouTube, spelletjes, privacy en veiligheid online. Een interactieve quiz met 10 levels waarin je leert hoe je slim en veilig omgaat met internet.
+                </div>
+                <div class="module-details">
+                    <span>⏱️ Geschatte tijd: 30-45 minuten</span>
+                    <span>👥 Leeftijd: 8-10 jaar</span>
+                </div>
+                <button class="play-button" onclick="startModule('digital-world')">
+                    🚀 Start Avontuur
+                </button>
+            </div>
+
+            <div class="module-card" data-module="osi-adventure">
+                <div class="module-header">
+                    <div class="module-icon">🕊️</div>
+                    <div>
+                        <div class="module-title">OSI Avontuur</div>
+                        <div class="module-status" id="status-osi-adventure">🕐 Nog niet gestart</div>
+                    </div>
+                </div>
+                <div class="module-description">
+                    Help onze digitale postduif een bericht bezorgen! Ontdek hoe computers met elkaar praten in 7 magische lagen. Leer over netwerken op een speelse manier met verhalen en quizzen.
+                </div>
+                <div class="module-details">
+                    <span>⏱️ Geschatte tijd: 45-60 minuten</span>
+                    <span>👥 Leeftijd: 8-10 jaar</span>
+                </div>
+                <button class="play-button" onclick="startModule('osi-adventure')">
+                    🚀 Start Avontuur
+                </button>
+            </div>
+
+            <div class="module-card" data-module="digital-academy">
+                <div class="module-header">
+                    <div class="module-icon">🎓</div>
+                    <div>
+                        <div class="module-title">Digital Academy</div>
+                        <div class="module-status" id="status-digital-academy">🕐 Nog niet gestart</div>
+                    </div>
+                </div>
+                <div class="module-description">
+                    Word een Digital Ranger! Leer alles over computers, besturingssystemen en digitale vaardigheden. Een complete cursus met badges en verschillende modules om je computerkennis te verbeteren.
+                </div>
+                <div class="module-details">
+                    <span>⏱️ Geschatte tijd: 60+ minuten</span>
+                    <span>👥 Leeftijd: 8-10 jaar</span>
+                </div>
+                <button class="play-button" onclick="startModule('digital-academy')">
+                    🚀 Start Avontuur
+                </button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>🎯 Over dit Leerportaal</h3>
+            <p>Dit interactieve leerportaal is speciaal ontworpen voor basisschoolkinderen van 8-10 jaar. Alle modules zijn educatief, veilig en maken leren leuk! Het portaal werkt op ChromeOS, Linux en Windows.</p>
+            <p><strong>💡 Tip voor docenten:</strong> Alle voortgang wordt lokaal opgeslagen. Elke computer behoudt zijn eigen voortgang.</p>
+            <button class="reset-button" onclick="resetProgress()">🔄 Reset Alle Voortgang</button>
+        </div>
+    </div>
+	
+<script>
+// Check if we're running locally and show helpful message
+if (window.location.protocol === 'file:') {
+    console.log('🏠 Draait lokaal - zorg dat alle bestanden in dezelfde map staan');
+}
+
+// Enhanced module loading with better error handling
+function startModule(moduleName) {
+    const moduleFiles = {
+        'digital-world': 'digital_world_explorer.html',
+        'osi-adventure': 'osi_adventure_game.html', 
+        'digital-academy': 'digital_academy_web.html'
+    };
+    
+    const fileName = moduleFiles[moduleName];
+    
+    // Try to open module
+    const newWindow = window.open(fileName, '_blank');
+    
+    // Enhanced error handling
+    setTimeout(() => {
+        if (!newWindow || newWindow.closed) {
+            alert(`📚 Module: ${moduleName}\n\n` +
+                  `⚠️ Kon module niet openen.\n\n` +
+                  `🔧 Oplossingen:\n` +
+                  `• Controleer of '${fileName}' in dezelfde map staat\n` +
+                  `• Disable popup blocker\n` +
+                  `• Open bestand handmatig uit bestandsverkenner`);
+        }
+    }, 1000);
+}
+</script>
+
+    <script>
+        // Progress tracking
+        let moduleProgress = {
+            'digital-world': 'not-started',
+            'osi-adventure': 'not-started', 
+            'digital-academy': 'not-started'
+        };
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('learning-portal-progress');
+            if (saved) {
+                moduleProgress = JSON.parse(saved);
+            }
+            updateUI();
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            localStorage.setItem('learning-portal-progress', JSON.stringify(moduleProgress));
+        }
+
+        // Update UI based on progress
+        function updateUI() {
+            const modules = ['digital-world', 'osi-adventure', 'digital-academy'];
+            let completedCount = 0;
+            let startedCount = 0;
+
+            modules.forEach(module => {
+                const card = document.querySelector(`[data-module="${module}"]`);
+                const status = document.getElementById(`status-${module}`);
+                const button = card.querySelector('.play-button');
+                
+                card.classList.remove('completed', 'started');
+                
+                if (moduleProgress[module] === 'completed') {
+                    completedCount++;
+                    card.classList.add('completed');
+                    status.textContent = '✅ Voltooid';
+                    status.style.color = '#4CAF50';
+                    button.textContent = '🔄 Speel Opnieuw';
+                    button.classList.add('completed');
+                } else if (moduleProgress[module] === 'started') {
+                    startedCount++;
+                    card.classList.add('started');
+                    status.textContent = '🎯 Gestart';
+                    status.style.color = '#FF9800';
+                    button.textContent = '▶️ Verder Gaan';
+                    button.classList.add('started');
+                } else {
+                    status.textContent = '🕐 Nog niet gestart';
+                    status.style.color = '#666';
+                    button.textContent = '🚀 Start Avontuur';
+                    button.classList.remove('completed', 'started');
+                }
+            });
+
+            // Update progress bar
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const totalProgress = (completedCount / modules.length) * 100;
+            
+            progressFill.style.width = totalProgress + '%';
+            progressText.textContent = `${completedCount} van ${modules.length} modules voltooid`;
+            
+            if (completedCount === modules.length) {
+                progressText.textContent += ' 🎉 Alle modules voltooid!';
+            }
+        }
+
+        // Start a module
+        function startModule(moduleName) {
+            // Mark as started if not already completed
+            if (moduleProgress[moduleName] === 'not-started') {
+                moduleProgress[moduleName] = 'started';
+                saveProgress();
+                updateUI();
+            }
+
+            // Open module in new window/tab
+            let url = '';
+            switch(moduleName) {
+                case 'digital-world':
+                    url = 'digital_world_explorer.html';
+                    break;
+                case 'osi-adventure':
+                    url = 'osi_game_complete.html';
+                    break;
+                case 'digital-academy':
+                    url = 'digital_academy_web.html';
+                    break;
+            }
+            
+            // Open in new tab
+            window.open(url, '_blank');
+            
+            // Listen for completion (simplified approach)
+            // In a real implementation, you'd need to modify the individual games
+            // to communicate back to the parent window about completion
+        }
+
+        // Reset all progress
+        function resetProgress() {
+            if (confirm('🔄 Weet je zeker dat je alle voortgang wilt resetten?')) {
+                moduleProgress = {
+                    'digital-world': 'not-started',
+                    'osi-adventure': 'not-started',
+                    'digital-academy': 'not-started'
+                };
+                saveProgress();
+                updateUI();
+                alert('✅ Alle voortgang is gereset!');
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+            
+            // Add some visual flair
+            const cards = document.querySelectorAll('.module-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Listen for messages from child windows about completion
+        window.addEventListener('message', function(event) {
+            if (event.origin !== window.location.origin) return;
+            
+            if (event.data.type === 'moduleCompleted') {
+                moduleProgress[event.data.module] = 'completed';
+                saveProgress();
+                updateUI();
+                
+                // Show celebration
+                alert(`🎉 Gefeliciteerd! Je hebt de ${event.data.moduleName} module voltooid!`);
+            }
+        });
+    </script>
+</body>
+</html>
