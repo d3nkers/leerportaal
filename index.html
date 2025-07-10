@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Digitaal Leerportaal - Basisschool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .school-info {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .modules-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .module-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .module-icon {
+            font-size: 5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .module-title {
+            font-size: 2.2em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .module-subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .module-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .module-features li {
+            padding: 8px 0;
+            font-size: 1.1em;
+            color: #555;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .module-features li::before {
+            content: '✨';
+            position: absolute;
+            left: 0;
+            top: 8px;
+        }
+
+        .module-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .launch-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .launch-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .launch-button:active {
+            transform: translateY(0);
+        }
+
+        .coming-soon {
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coming-soon::after {
+            content: '🚧 KOMT BINNENKORT';
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: #f44336;
+            color: white;
+            padding: 5px 40px;
+            font-size: 0.8em;
+            font-weight: bold;
+            transform: rotate(45deg);
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .footer h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .tech-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tech-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .modules-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .module-card {
+                padding: 25px;
+            }
+            
+            .module-title {
+                font-size: 1.8em;
+            }
+        }
+
+        @media (max-width: 1200px) and (min-width: 769px) {
+            .modules-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .module-card {
+                padding: 25px;
+            }
+        }
+
+        .demo-badge {
+            background: #4CAF50;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .coming-soon-badge {
+            background: #7C4DFF;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Digitaal Leerportaal</h1>
+            <p>Interactieve leermodules voor basisschoolkinderen (8-10 jaar)</p>
+            <div class="school-info">
+                🏫 Geschikt voor ChromeOS, Linux & Windows
+            </div>
+        </div>
+
+        <div class="modules-section">
+            <!-- Module 1: Basis Leerportaal -->
+            <div class="module-card">
+                <div class="demo-badge">✅ BESCHIKBAAR</div>
+                <div class="module-header">
+                    <div class="module-icon">🌟</div>
+                    <h2 class="module-title">Module 1: Basis Leerportaal</h2>
+                    <p class="module-subtitle">Complete introductie tot digitale geletterdheid</p>
+                </div>
+
+                <ul class="module-features">
+                    <li>Digital World Explorer - 10 levels digitale veiligheid</li>
+                    <li>OSI Avontuur - 7 lagen netwerkonderwijs</li>
+                    <li>Digital Academy - 5 computer basics lessen</li>
+                    <li>Interactieve quizzen en badges</li>
+                    <li>Voortgang bijhouden per computer</li>
+                </ul>
+
+                <div class="module-stats">
+                    <div class="stat">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Sub-modules</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">22</div>
+                        <div class="stat-label">Lessen</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">60+</div>
+                        <div class="stat-label">Minuten</div>
+                    </div>
+                </div>
+
+                <button class="launch-button" onclick="launchModule1()">
+                    🚀 Start Basis Leerportaal
+                </button>
+            </div>
+
+            <!-- Module 2: Digital Academy Pro -->
+            <div class="module-card">
+                <div class="demo-badge">✅ BESCHIKBAAR</div>
+                <div class="module-header">
+                    <div class="module-icon">🎓</div>
+                    <h2 class="module-title">Module 2: Digital Academy Pro</h2>
+                    <p class="module-subtitle">Uitgebreide Digital Rangers training</p>
+                </div>
+
+                <ul class="module-features">
+                    <li>Volledige Digital Rangers RPG ervaring</li>
+                    <li>5 Computer Basics missies met verhaallijnen</li>
+                    <li>Uitgebreid badge en rank systeem</li>
+                    <li>Van Digital Rookie naar Digital Legend</li>
+                    <li>Demo reset functie voor presentaties</li>
+                </ul>
+
+                <div class="module-stats">
+                    <div class="stat">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Missies</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">15</div>
+                        <div class="stat-label">Quiz Vragen</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">45+</div>
+                        <div class="stat-label">Minuten</div>
+                    </div>
+                </div>
+
+                <button class="launch-button" onclick="launchModule2()">
+                    🚀 Start Digital Academy Pro
+                </button>
+            </div>
+
+            <!-- Module 3: Digital Creator Studio (Coming Soon) -->
+            <div class="module-card" style="background: linear-gradient(135deg, #f8f4ff, #e8f5e8); border-left: 5px solid #7C4DFF;">
+                <div class="coming-soon-badge">🚧 Q3 2024</div>
+                <div class="module-header">
+                    <div class="module-icon">🎨</div>
+                    <h2 class="module-title" style="color: #4A148C;">Module 3: Digital Creator Studio</h2>
+                    <p class="module-subtitle" style="color: #6A1B9A;">Word een digitale maker en innovator</p>
+                </div>
+
+                <ul class="module-features">
+                    <li>Code Academy Junior - Programmeren voor beginners</li>
+                    <li>Digital Art Workshop - Tekenen en ontwerpen</li>
+                    <li>Video Creator Lab - Eigen content maken</li>
+                    <li>Web Builder Academy - Websites bouwen</li>
+                    <li>AI Playground - Kennismaking met AI tools</li>
+                </ul>
+
+                <div class="module-stats">
+                    <div class="stat">
+                        <div class="stat-number" style="color: #7C4DFF;">5</div>
+                        <div class="stat-label">Studios</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" style="color: #7C4DFF;">25+</div>
+                        <div class="stat-label">Projecten</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" style="color: #7C4DFF;">90+</div>
+                        <div class="stat-label">Minuten</div>
+                    </div>
+                </div>
+
+                <button class="launch-button" onclick="comingSoonModule3()" style="background: linear-gradient(135deg, #7C4DFF, #512DA8); color: white;">
+                    🎨 Komt Q3 2024
+                </button>
+            </div>
+
+            <!-- Bonus: Community & Resources -->
+            <div class="module-card" style="background: linear-gradient(135deg, #fff3e0, #fce4ec); border-left: 5px solid #FF6F00;">
+                <div class="demo-badge" style="background: #FF6F00;">📚 RESOURCES</div>
+                <div class="module-header">
+                    <div class="module-icon">🌈</div>
+                    <h2 class="module-title" style="color: #E65100;">Community & Uitbreidingen</h2>
+                    <p class="module-subtitle" style="color: #F57F17;">Voor docenten, ouders en ontwikkelaars</p>
+                </div>
+
+                <ul class="module-features">
+                    <li>📖 Docentenhandleiding & lesmateriaal</li>
+                    <li>🎯 Curriculum mapping (Nederlandse standaarden)</li>
+                    <li>🔧 Aanpassingsgids voor scholen</li>
+                    <li>🌍 Community forum & feedback</li>
+                    <li>📊 Voortgang tracking tips</li>
+                </ul>
+
+                <div class="module-stats">
+                    <div class="stat">
+                        <div class="stat-number" style="color: #FF6F00;">100%</div>
+                        <div class="stat-label">Open Source</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" style="color: #FF6F00;">3</div>
+                        <div class="stat-label">Platformen</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" style="color: #FF6F00;">8-10</div>
+                        <div class="stat-label">Leeftijd</div>
+                    </div>
+                </div>
+
+                <button class="launch-button" onclick="showResources()" style="background: linear-gradient(135deg, #FF6F00, #F57C00);">
+                    📚 Bekijk Resources
+                </button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>🛠️ Technische Informatie</h3>
+            <div class="tech-info">
+                <div class="tech-item">
+                    <strong>💻 Compatibiliteit</strong><br>
+                    Alle moderne browsers op ChromeOS, Linux, Windows en macOS
+                </div>
+                <div class="tech-item">
+                    <strong>🌐 Deployment</strong><br>
+                    GitHub Pages voor online toegang, lokale bestanden voor offline gebruik
+                </div>
+                <div class="tech-item">
+                    <strong>💾 Data Opslag</strong><br>
+                    Voortgang wordt lokaal opgeslagen per browser/computer
+                </div>
+                <div class="tech-item">
+                    <strong>📚 Content Aanbod</strong><br>
+                    Module 1 & 2 beschikbaar, Module 3 (Digital Creator Studio) in ontwikkeling
+                </div>
+            </div>
+            <p style="margin-top: 20px; color: #666;">
+                📧 Voor vragen of feedback: Neem contact op via GitHub Issues
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function launchModule1() {
+            // Check if we're on GitHub Pages
+            if (window.location.hostname.includes('github.io')) {
+                // Navigate to module1 subdirectory
+                window.location.href = './module1-basis/';
+            } else {
+                // For local development, try relative path
+                window.location.href = './module1-basis/index.html';
+            }
+        }
+
+        function launchModule2() {
+            // Check if we're on GitHub Pages
+            if (window.location.hostname.includes('github.io')) {
+                // Navigate to module2 subdirectory
+                window.location.href = './module2-academy/';
+            } else {
+                // For local development, try relative path
+                window.location.href = './module2-academy/index.html';
+            }
+        }
+
+        function showResources() {
+            alert('📚 Community & Resources\n\n' +
+                  '🎓 Voor Docenten:\n' +
+                  '• Lesplannen & curriculum mapping\n' +
+                  '• Voortgang tracking handleiding\n' +
+                  '• Klaslokaal setup instructies\n\n' +
+                  '👨‍👩‍👧‍👦 Voor Ouders:\n' +
+                  '• Thuisgebruik gids\n' +
+                  '• Veiligheid & privacy informatie\n' +
+                  '• Voortgang begrijpen\n\n' +
+                  '🔧 Voor Ontwikkelaars:\n' +
+                  '• GitHub repository\n' +
+                  '• Aanpassingsgids\n' +
+                  '• Community bijdragen\n\n' +
+                  '📧 Contact: GitHub Issues voor vragen\n' +
+                  '🌍 Volledig open source & gratis!');
+        }
+
+        function comingSoonModule3() {
+            alert('🎨 Module 3: Digital Creator Studio\n\n' +
+                  '📅 Verwachte release: Q3 2024\n\n' +
+                  '✨ Features in ontwikkeling:\n' +
+                  '• Code Academy Junior - Scratch-style programmeren\n' +
+                  '• Digital Art Workshop - Pixel art & digitaal tekenen\n' +
+                  '• Video Creator Lab - Stop-motion & editing basics\n' +
+                  '• Web Builder Academy - HTML/CSS voor kinderen\n' +
+                  '• AI Playground - ChatGPT, DALL-E voor kids\n\n' +
+                  '🎯 Focus: Van consument naar creator!\n\n' +
+                  '📧 Wil je een melding ontvangen? Volg de GitHub repository!');
+        }
+
+        function comingSoon() {
+            // Legacy function - redirect to module 3
+            comingSoonModule3();
+        }
+
+        // Analytics (optioneel, voor GitHub Pages)
+        if (window.location.hostname.includes('github.io')) {
+            console.log('📊 GitHub Pages deployment detected');
+            // Hier kun je eventueel analytics toevoegen
+        }
+
+        // Welcome message
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎓 Digitaal Leerportaal geladen!');
+            console.log('🌟 Module 1: Beschikbaar - Basis Leerportaal');
+            console.log('🎓 Module 2: Beschikbaar - Digital Academy Pro');
+            console.log('🎨 Module 3: In ontwikkeling - Digital Creator Studio');
+        });
+    </script>
+</body>
+</html>
