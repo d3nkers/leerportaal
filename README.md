@@ -84,8 +84,8 @@ Alle modules zijn standalone HTML bestanden die je kunt aanpassen:
 
 Lokale Development
 
-# Geen build proces nodig - gewoon HTML/CSS/JS
-# Open bestanden direct in browser voor testing
+- Geen build proces nodig - gewoon HTML/CSS/JS
+- Open bestanden direct in browser voor testing
 
 **Educatieve Metrics**
 
@@ -100,7 +100,6 @@ Lokale Development
 Contributions zijn welkom!
 
 Gewenste Bijdragen
-- **Vertalingen** naar andere talen
 - **Toegankelijkheid** verbeteringen
 - **Nieuwe lessen** en modules
 - **Bug fixes** en optimalisaties
